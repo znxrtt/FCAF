@@ -1,0 +1,78 @@
+{
+  "bomFormat" : "CycloneDX",
+  "specVersion" : "1.6",
+  "serialNumber" : "urn:uuid:13bc7458-aada-43de-8b61-79cd108e87d4",
+  "version" : 1,
+  "metadata" : {
+    "timestamp" : "2026-07-10T08:39:40Z",
+    "tools" : {
+      "services" : [
+        {
+          "provider" : {
+            "name" : "IBM"
+          },
+          "name" : "Sonar Cryptography Plugin",
+          "version" : "1.6.0"
+        }
+      ]
+    }
+  },
+  "components" : [
+    {
+      "type" : "cryptographic-asset",
+      "bom-ref" : "e22b96df-4d29-4dbf-a549-18f8dbe09903",
+      "name" : "private-key@e22b96df-4d29-4dbf-a549-18f8dbe09903",
+      "evidence" : {
+        "occurrences" : [
+          {
+            "location" : "payment_simulation/pki/certificate_manager.py",
+            "line" : 3,
+            "offset" : 14,
+            "additionalContext" : "generate_private_key"
+          }
+        ]
+      },
+      "cryptoProperties" : {
+        "assetType" : "related-crypto-material",
+        "relatedCryptoMaterialProperties" : {
+          "type" : "private-key",
+          "size" : 2048
+        }
+      }
+    },
+    {
+      "type" : "cryptographic-asset",
+      "bom-ref" : "be5e5f5e-42f5-47ab-88dd-31cfc144c7e9",
+      "name" : "RSA-2048",
+      "evidence" : {
+        "occurrences" : [
+          {
+            "location" : "payment_simulation/pki/certificate_manager.py",
+            "line" : 3,
+            "offset" : 14,
+            "additionalContext" : "generate_private_key"
+          }
+        ]
+      },
+      "cryptoProperties" : {
+        "assetType" : "algorithm",
+        "algorithmProperties" : {
+          "primitive" : "pke",
+          "parameterSetIdentifier" : "2048",
+          "cryptoFunctions" : [
+            "keygen"
+          ]
+        },
+        "oid" : "1.2.840.113549.1.1.1"
+      }
+    }
+  ],
+  "dependencies" : [
+    {
+      "ref" : "e22b96df-4d29-4dbf-a549-18f8dbe09903",
+      "dependsOn" : [
+        "be5e5f5e-42f5-47ab-88dd-31cfc144c7e9"
+      ]
+    }
+  ]
+}

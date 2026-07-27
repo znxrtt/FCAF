@@ -1,0 +1,269 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:3b700b7c-cbf1-4311-a8dc-81992148d868",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-07-21T10:49:39Z",
+    "tools": {
+      "services": [
+        {
+          "provider": {
+            "name": "IBM"
+          },
+          "name": "Sonar Cryptography Plugin",
+          "version": "1.6.0"
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "adbb4835-1690-4f8a-b669-d2cb638514ca",
+      "name": "private-key@adbb4835-1690-4f8a-b669-d2cb638514ca",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "payment_simulation/pki/certificate_manager.py",
+            "line": 3,
+            "offset": 14,
+            "additionalContext": "generate_private_key"
+          }
+        ]
+      },
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "private-key",
+          "size": 2048
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "8388b0a9-e9b5-405c-8b62-3e0213d13418",
+      "name": "FFDH",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "payment_simulation/vpn/tunnel_manager.py",
+            "line": 8,
+            "offset": 14,
+            "additionalContext": "generate_private_key"
+          }
+        ]
+      },
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "pke",
+          "cryptoFunctions": [
+            "keygen"
+          ]
+        },
+        "oid": "1.2.840.113549.1.3.1"
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "05b1184a-0ff5-4b1d-b97a-77b01bbe5d95",
+      "name": "private-key@05b1184a-0ff5-4b1d-b97a-77b01bbe5d95",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "payment_simulation/payment_gateway/signing_service.py",
+            "line": 4,
+            "offset": 14,
+            "additionalContext": "generate_private_key"
+          }
+        ]
+      },
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "private-key"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "c0b5879f-18da-467c-81d2-7003a69f6bcc",
+      "name": "ECDSA-secp256r1-SHA-256",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "payment_simulation/payment_gateway/signing_service.py",
+            "line": 8,
+            "offset": 12,
+            "additionalContext": "sign"
+          }
+        ]
+      },
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "curve": "secp256r1",
+          "cryptoFunctions": [
+            "keygen",
+            "sign"
+          ]
+        },
+        "oid": "1.2.840.10045.4.3.2"
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "72127454-4848-4528-9b03-5361e48a854f",
+      "name": "SHA-256",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "payment_simulation/payment_gateway/signing_service.py",
+            "line": 10,
+            "offset": 13,
+            "additionalContext": "SHA256"
+          }
+        ]
+      },
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "hash",
+          "parameterSetIdentifier": "256",
+          "cryptoFunctions": [
+            "digest"
+          ]
+        },
+        "oid": "2.16.840.1.101.3.4.2.1"
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "3822fb98-f55f-4ffd-a5d8-0ec4fba3dce9",
+      "name": "private-key@3822fb98-f55f-4ffd-a5d8-0ec4fba3dce9",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "payment_simulation/certificate_authority/ca_manager.py",
+            "line": 3,
+            "offset": 14,
+            "additionalContext": "generate_private_key"
+          }
+        ]
+      },
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "private-key"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "8409d3c0-e48e-41f0-8ba6-41153c225012",
+      "name": "private-key@8409d3c0-e48e-41f0-8ba6-41153c225012",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "payment_simulation/vpn/tunnel_manager.py",
+            "line": 8,
+            "offset": 14,
+            "additionalContext": "generate_private_key"
+          }
+        ]
+      },
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "private-key"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "4afbc28d-7909-4325-a5ff-d57d73cf4f8b",
+      "name": "RSA-2048",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "payment_simulation/pki/certificate_manager.py",
+            "line": 3,
+            "offset": 14,
+            "additionalContext": "generate_private_key"
+          }
+        ]
+      },
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "pke",
+          "parameterSetIdentifier": "2048",
+          "cryptoFunctions": [
+            "keygen"
+          ]
+        },
+        "oid": "1.2.840.113549.1.1.1"
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "39ed7f5b-959a-43a5-8a3b-f9a6db7dd186",
+      "name": "EC-secp256r1",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "payment_simulation/certificate_authority/ca_manager.py",
+            "line": 3,
+            "offset": 14,
+            "additionalContext": "generate_private_key"
+          }
+        ]
+      },
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "pke",
+          "curve": "secp256r1",
+          "cryptoFunctions": [
+            "keygen"
+          ]
+        },
+        "oid": "1.2.840.10045.2.1"
+      }
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "c0b5879f-18da-467c-81d2-7003a69f6bcc",
+      "dependsOn": [
+        "72127454-4848-4528-9b03-5361e48a854f"
+      ]
+    },
+    {
+      "ref": "3822fb98-f55f-4ffd-a5d8-0ec4fba3dce9",
+      "dependsOn": [
+        "39ed7f5b-959a-43a5-8a3b-f9a6db7dd186"
+      ]
+    },
+    {
+      "ref": "adbb4835-1690-4f8a-b669-d2cb638514ca",
+      "dependsOn": [
+        "4afbc28d-7909-4325-a5ff-d57d73cf4f8b"
+      ]
+    },
+    {
+      "ref": "05b1184a-0ff5-4b1d-b97a-77b01bbe5d95",
+      "dependsOn": [
+        "c0b5879f-18da-467c-81d2-7003a69f6bcc"
+      ]
+    },
+    {
+      "ref": "8409d3c0-e48e-41f0-8ba6-41153c225012",
+      "dependsOn": [
+        "8388b0a9-e9b5-405c-8b62-3e0213d13418"
+      ]
+    }
+  ]
+}

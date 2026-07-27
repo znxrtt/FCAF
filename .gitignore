@@ -1,0 +1,37 @@
+﻿# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Environment and credentials
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Sonar and tools
+.sonar/
+.scannerwork/
+
+# Generated evidence and reports
+assessment_report.json
+assessment_report.csv
+
+# IDE and operating system
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
+# Local AI tool configuration
+.claude/

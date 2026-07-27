@@ -1,0 +1,8 @@
+{
+  "payment_gateway": "Payment Gateway",
+  "pki": "PKI Infrastructure",
+  "open_banking": "Open Banking API",
+  "vpn": "VPN Infrastructure",
+  "internal": "Internal Services",
+  "certificate_authority": "PKI Infrastructure"
+}
