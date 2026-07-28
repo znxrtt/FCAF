@@ -65,7 +65,7 @@ def coordination_score(primitive):
 # Note: CycloneDX dependencies arrays are NOT used here.
 #
 # Level 1  OID in 5+ distinct file locations
-# Level 2  OID in 3-5 distinct file locations
+# Level 2  OID in 3-4 distinct file locations
 # Level 3  OID in 2 distinct file locations
 # Level 4  OID in 1 file location (highly localised)
 

@@ -62,6 +62,15 @@ def test_d2_missing_location_evidence_is_not_assessed():
     assert pervasiveness_score(None) is None
 
 
+def test_d2_pervasiveness_boundary_values():
+    assert pervasiveness_score(0) is None
+    assert pervasiveness_score(1) == 4
+    assert pervasiveness_score(2) == 3
+    assert pervasiveness_score(3) == 2
+    assert pervasiveness_score(4) == 2
+    assert pervasiveness_score(5) == 1
+
+
 # D3: Protocol Agility
 
 def test_d3_legacy_tls_returns_level_1():

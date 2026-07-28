@@ -296,6 +296,28 @@ def test_oid_location_map():
     )
 
 
+def test_oid_map_dedupes_same_normalized_location():
+    # Two occurrences that normalize to the same file path
+    # (differing only in case/separators) must count as one
+    # distinct source location, not two.
+    assets = [
+        {
+            "asset_type": "algorithm",
+            "oid": "1.2.840.113549.1.1.1",
+            "locations": [
+                "payment_simulation/pki/key_manager.py",
+                r"Payment_Simulation\PKI\Key_Manager.py",
+            ],
+        }
+    ]
+
+    oid_map = build_oid_location_map(assets)
+
+    assert len(
+        oid_map["1.2.840.113549.1.1.1"]
+    ) == 1
+
+
 def test_oid_map_excludes_material_assets():
     cbom = load_cbom(
         CBOM_FILE
