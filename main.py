@@ -65,7 +65,8 @@ csv_report_path = save_csv_report(
 # Display summary
 
 print(
-    "\n=== PQC Crypto Agility Maturity Assessment ===\n"
+    "\n=== FCAF - Financial Crypto Agility Assessment "
+    "Framework ===\n"
 )
 
 print(
@@ -116,7 +117,7 @@ for item in report:
     )
 
     print(
-        f"Payment Weight  : "
+        f"Business Criticality Weight: "
         f"{item['payment_weight']}"
     )
 

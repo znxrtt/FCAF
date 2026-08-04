@@ -12,14 +12,22 @@ import streamlit as st
 from report_generator import generate_report
 from ui_helpers import (
     PAGES,
+    WORKFLOW_STEPS,
     PAGE_COMMAND_CENTER,
     PAGE_EVIDENCE_VAULT,
+    PAGE_MAP,
     PAGE_MATURITY_EXPLORER,
     PAGE_PRIORITY_QUEUE,
     PAGE_MIGRATION_PLANNER,
     PAGE_VALIDATION_LAB,
-    PAGE_REPORTS,
     NAV_STATE_KEY,
+    FRAMEWORK_NAME,
+    FRAMEWORK_FULL_NAME,
+    FRAMEWORK_TAGLINE,
+    AUTHOR_NAME,
+    MENTOR_NAME,
+    ORG_NAME,
+    BUSINESS_CRITICALITY_LABEL,
     BADGE_MEASURED,
     BADGE_CALCULATED,
     BADGE_PROJECTED,
@@ -38,6 +46,7 @@ from ui_helpers import (
     escape,
     escape_join,
     render_html,
+    render_header,
     badge,
     metric_card,
     dimension_card,
@@ -51,7 +60,7 @@ from ui_helpers import (
 # -------------------------------------------------------------------
 
 st.set_page_config(
-    page_title="Crypto Agility Command Center",
+    page_title="FCAF Command Center",
     page_icon="◈",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -753,6 +762,275 @@ st.markdown(
         }
     }
 
+    /* ---------- Executive branding header ---------- */
+    .brand-header {
+        display: flex;
+        align-items: center;
+        gap: 1.4rem;
+        padding: 1.1rem 1.4rem;
+        margin-bottom: 1.1rem;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        background: linear-gradient(
+            120deg,
+            rgba(11, 19, 36, 0.92),
+            rgba(16, 26, 48, 0.92)
+        );
+    }
+
+    .brand-logo-badge {
+        flex-shrink: 0;
+        padding: 0.55rem 0.9rem;
+        border-radius: 10px;
+        border: 1px solid rgba(57, 217, 249, 0.35);
+        background: rgba(57, 217, 249, 0.1);
+        color: #39d9f9;
+        font-weight: 850;
+        font-size: 0.85rem;
+        letter-spacing: 0.08em;
+    }
+
+    .brand-logo-img {
+        flex-shrink: 0;
+        width: clamp(140px, 16vw, 210px);
+        max-width: 210px;
+        min-width: 180px;
+        height: auto;
+        object-fit: contain;
+        border-radius: 8px;
+        background: #ffffff;
+        padding: 0.35rem 0.55rem;
+    }
+
+    .brand-main {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .brand-title {
+        color: #ffffff;
+        font-size: 1.4rem;
+        font-weight: 850;
+        letter-spacing: -0.01em;
+    }
+
+    .brand-subtitle {
+        margin-top: 0.15rem;
+        color: #c3cfe6;
+        font-size: 0.82rem;
+        font-weight: 650;
+    }
+
+    .brand-subline {
+        margin-top: 0.3rem;
+        color: var(--muted);
+        font-size: 0.7rem;
+        letter-spacing: 0.03em;
+    }
+
+    .brand-meta {
+        flex-shrink: 0;
+        display: flex;
+        gap: 1.3rem;
+    }
+
+    .brand-meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+        text-align: right;
+    }
+
+    .brand-meta-label {
+        color: var(--muted);
+        font-size: 0.6rem;
+        font-weight: 750;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+    .brand-meta-value {
+        color: var(--text);
+        font-size: 0.76rem;
+        font-weight: 700;
+    }
+
+    @media (max-width: 950px) {
+        .brand-header {
+            flex-wrap: wrap;
+        }
+
+        .brand-meta {
+            flex-wrap: wrap;
+            gap: 0.8rem 1.2rem;
+        }
+
+        .brand-meta-item {
+            text-align: left;
+        }
+    }
+
+    @media (max-width: 620px) {
+        .brand-logo-img {
+            width: 140px;
+            min-width: 0;
+        }
+    }
+
+    /* ---------- Workflow stepper ---------- */
+    .stepper-track {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.2rem 0.2rem 0.6rem;
+        margin-bottom: -0.6rem;
+        overflow-x: auto;
+    }
+
+    .step-pill {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.4rem 0.75rem;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--surface-soft);
+        white-space: nowrap;
+        flex: 1 1 auto;
+        justify-content: center;
+    }
+
+    .step-pill-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.3rem;
+        height: 1.3rem;
+        border-radius: 50%;
+        font-size: 0.68rem;
+        font-weight: 800;
+        background: rgba(114, 128, 154, 0.22);
+        color: var(--muted);
+    }
+
+    .step-pill-label {
+        font-size: 0.74rem;
+        font-weight: 700;
+        color: var(--muted);
+        letter-spacing: 0.01em;
+    }
+
+    .step-pill.completed {
+        border-color: rgba(67, 224, 173, 0.35);
+        background: var(--green-soft);
+    }
+
+    .step-pill.completed .step-pill-number {
+        background: var(--green);
+        color: #06251c;
+    }
+
+    .step-pill.completed .step-pill-label {
+        color: #b6f3dd;
+    }
+
+    .step-pill.active {
+        border-color: rgba(57, 217, 249, 0.55);
+        background: var(--cyan-soft);
+        box-shadow: 0 0 0 1px rgba(57, 217, 249, 0.25);
+    }
+
+    .step-pill.active .step-pill-number {
+        background: var(--cyan);
+        color: #06232b;
+    }
+
+    .step-pill.active .step-pill-label {
+        color: #ffffff;
+    }
+
+    .step-nav-row div.stButton > button {
+        border-radius: 999px;
+        font-size: 0.68rem;
+        padding: 0.32rem 0.3rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* ---------- Assessment Scope panel ---------- */
+    .scope-panel {
+        padding: 1.1rem 1.3rem 1.3rem;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: var(--surface-soft);
+        margin-bottom: 1.1rem;
+    }
+
+    .scope-statement {
+        color: var(--muted);
+        font-size: 0.78rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .scope-statement strong {
+        color: var(--text);
+    }
+
+    .scope-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0.9rem;
+    }
+
+    .scope-item-title {
+        color: var(--muted);
+        font-size: 0.62rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 0.45rem;
+    }
+
+    .scope-item-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .scope-item-list li {
+        color: var(--text);
+        font-size: 0.76rem;
+        font-weight: 650;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.4rem;
+    }
+
+    .scope-check {
+        color: var(--green);
+        font-weight: 800;
+        flex-shrink: 0;
+    }
+
+    @media (max-width: 950px) {
+        .scope-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @media (max-width: 620px) {
+        .scope-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
     </style>
     """,
     unsafe_allow_html=True,
@@ -899,10 +1177,13 @@ def get_selected_asset(report, asset_name):
 # Sidebar: navigation
 # -------------------------------------------------------------------
 
+if NAV_STATE_KEY not in st.session_state:
+    st.session_state[NAV_STATE_KEY] = PAGES[0]
+
 with st.sidebar:
 
     render_html(
-        """
+        f"""
         <div style="padding: 0.4rem 0 1.1rem;">
             <div style="
                 color: #39d9f9;
@@ -910,7 +1191,7 @@ with st.sidebar:
                 font-weight: 850;
                 letter-spacing: -0.02em;
             ">
-                ◈ Crypto Agility
+                ◈ {escape(FRAMEWORK_NAME)}
             </div>
             <div style="
                 margin-top: 0.25rem;
@@ -920,35 +1201,10 @@ with st.sidebar:
                 letter-spacing: 0.14em;
                 text-transform: uppercase;
             ">
-                PQC Readiness Command Center
+                Assessment Input
             </div>
         </div>
         """
-    )
-
-    if NAV_STATE_KEY not in st.session_state:
-        st.session_state[NAV_STATE_KEY] = PAGES[0]
-
-    for page_name in PAGES:
-        is_active_page = (
-            st.session_state[NAV_STATE_KEY] == page_name
-        )
-
-        nav_clicked = st.button(
-            page_name,
-            key=f"nav_{page_name}",
-            use_container_width=True,
-            type="primary" if is_active_page else "secondary",
-        )
-
-        if nav_clicked and not is_active_page:
-            st.session_state[NAV_STATE_KEY] = page_name
-            st.rerun()
-
-    page = st.session_state[NAV_STATE_KEY]
-
-    render_html(
-        '<div class="section-label">Assessment Input</div>'
     )
 
     with st.expander("Evidence files", expanded=True):
@@ -1170,6 +1426,85 @@ component_mapping_data = st.session_state.get(
 cryptolyzer_data = st.session_state.get("cryptolyzer_data")
 
 
+# -------------------------------------------------------------------
+# Executive header + workflow stepper navigation
+# -------------------------------------------------------------------
+
+status_label = (
+    f"{len(report)} Asset(s) Assessed" if report else "Not Started"
+)
+
+render_header(status_label)
+
+render_html('<div class="step-nav-row">')
+
+step_columns = st.columns(len(WORKFLOW_STEPS))
+
+for step, column in zip(WORKFLOW_STEPS, step_columns):
+    with column:
+        step_label = (
+            f'{step["number"]}. {step["label"]}'
+            if step["number"] is not None
+            else step["label"]
+        )
+
+        is_active_step = (
+            st.session_state[NAV_STATE_KEY] == step["key"]
+        )
+
+        step_clicked = st.button(
+            step_label,
+            key=f"nav_{step['key']}",
+            use_container_width=True,
+            type="primary" if is_active_step else "secondary",
+            disabled=not report and step["key"] != PAGE_COMMAND_CENTER,
+        )
+
+        if step_clicked and not is_active_step:
+            st.session_state[NAV_STATE_KEY] = step["key"]
+            st.rerun()
+
+render_html("</div>")
+
+page = st.session_state[NAV_STATE_KEY]
+
+
+def go_to_step(offset):
+    step_keys = [step["key"] for step in WORKFLOW_STEPS]
+    current_position = step_keys.index(page)
+    target_position = current_position + offset
+
+    if 0 <= target_position < len(step_keys):
+        st.session_state[NAV_STATE_KEY] = step_keys[target_position]
+        st.rerun()
+
+
+def render_step_navigation():
+    step_keys = [step["key"] for step in WORKFLOW_STEPS]
+    current_position = step_keys.index(page)
+
+    previous_column, next_column = st.columns(2)
+
+    with previous_column:
+        if current_position > 0:
+            if st.button(
+                f"← Back to {WORKFLOW_STEPS[current_position - 1]['label']}",
+                use_container_width=True,
+                key="step_nav_back",
+            ):
+                go_to_step(-1)
+
+    with next_column:
+        if current_position < len(step_keys) - 1:
+            if st.button(
+                f"Continue to {WORKFLOW_STEPS[current_position + 1]['label']} →",
+                use_container_width=True,
+                type="primary",
+                key="step_nav_next",
+            ):
+                go_to_step(1)
+
+
 def section_hero(eyebrow, title, description):
     render_html(
         f"""
@@ -1182,6 +1517,193 @@ def section_hero(eyebrow, title, description):
     )
 
 
+ASSESSMENT_SCOPE_ITEMS = (
+    ("Framework Scope", ("Financial Systems",)),
+    ("Methodology", ("Domain-Independent D1-D4 Assessment",)),
+    ("Evidence Sources", ("CBOM", "CryptoLyzer")),
+    ("Validated Use Case", ("Payment Systems",)),
+    (
+        "Core Outputs",
+        ("Maturity", "Confidence", "Prioritization", "HNDL Exposure"),
+    ),
+)
+
+
+def render_assessment_scope():
+    """Renders the executive Assessment Scope card, clarifying that
+    the methodology is domain-independent with payment systems as
+    the validated case study. Display-only — no calculations."""
+
+    render_html('<div class="section-label">Assessment Scope</div>')
+
+    scope_columns = "".join(
+        f"""
+        <div>
+            <div class="scope-item-title">{escape(title)}</div>
+            <ul class="scope-item-list">
+                {''.join(
+                    f'<li><span class="scope-check">&#10003;</span>'
+                    f'{escape(entry)}</li>'
+                    for entry in entries
+                )}
+            </ul>
+        </div>
+        """
+        for title, entries in ASSESSMENT_SCOPE_ITEMS
+    )
+
+    render_html(
+        f"""
+        <div class="scope-panel">
+            <div class="scope-statement">
+                The <strong>{escape(FRAMEWORK_FULL_NAME)}</strong>
+                ({escape(FRAMEWORK_NAME)}) uses CBOM and runtime
+                protocol evidence to assess cryptographic migration
+                readiness. The assessment methodology is
+                domain-independent. Payment Systems are the
+                implemented and validated case study used to
+                demonstrate prioritization and migration planning.
+            </div>
+            <div class="scope-grid">
+                {scope_columns}
+            </div>
+        </div>
+        """
+    )
+
+
+WORKFLOW_STEP_DETAILS = (
+    (
+        "1. Collect Evidence",
+        "CBOM + CryptoLyzer measured algorithm and protocol evidence.",
+    ),
+    (
+        "2. Map Components",
+        "Business context resolution against financial system components.",
+    ),
+    (
+        "3. Assess Maturity",
+        "D1-D4 evidence-driven scoring, deterministic and non-questionnaire.",
+    ),
+    (
+        "4. Prioritise Migration",
+        "Business criticality weighting combined with algorithm risk.",
+    ),
+    (
+        "5. Plan Remediation",
+        "Recommendations, impact chains, and Mosca/HNDL urgency.",
+    ),
+    (
+        "6. Validate Readiness",
+        "Reassessment and evidence refresh against the test suite.",
+    ),
+)
+
+
+def render_framework_overview_intro():
+    """Renders About Framework, the FCAF workflow diagram, and the
+    Portfolio Summary panel — the landing-page content that
+    precedes executive metrics on the Overview page."""
+
+    render_html('<div class="section-label">About Framework</div>')
+
+    render_html(
+        f"""
+        <div class="panel">
+            <div class="panel-title">
+                {escape(FRAMEWORK_FULL_NAME)} ({escape(FRAMEWORK_NAME)})
+            </div>
+            <div class="panel-copy">
+                An evidence-driven framework that transforms CBOM
+                and protocol evidence into cryptographic migration
+                readiness assessments.
+            </div>
+            <div class="panel-copy">
+                <strong>Assessment dimensions:</strong>
+                D1 &ndash; Migration Coordination Complexity ·
+                D2 &ndash; Implementation Pervasiveness ·
+                D3 &ndash; Protocol Agility ·
+                D4 &ndash; Persistent Crypto Material Evidence
+            </div>
+            <div class="panel-copy">
+                <strong>Core outputs:</strong>
+                Maturity Score, Confidence Metric, Binding
+                Constraints, Migration Recommendations, Priority
+                Ranking, HNDL Exposure Assessment.
+            </div>
+            <div class="panel-copy" style="margin-top: 0.6rem;">
+                The maturity assessment methodology is
+                domain-independent. Payment Systems are the
+                primary implemented and validated case study.
+                Domain-specific profiles influence prioritisation
+                only and do not affect CBOM evidence, D1-D4 scores,
+                maturity, or confidence.
+            </div>
+        </div>
+        """
+    )
+
+    render_html('<div class="section-label">FCAF Workflow</div>')
+
+    workflow_items = "".join(
+        f"""
+        <div class="chain-node">
+            <div class="chain-kicker">Step</div>
+            <div class="chain-value">{escape(title)}</div>
+            <div class="chain-note">{escape(copy)}</div>
+        </div>
+        """
+        for title, copy in WORKFLOW_STEP_DETAILS
+    )
+
+    render_html(f'<div class="evidence-chain">{workflow_items}</div>')
+
+    render_html('<div class="section-label">Portfolio Summary</div>')
+
+    render_html(
+        f"""
+        <div class="panel">
+            <div class="badge-row">
+                {badge("Domain-Independent Assessment Engine", BADGE_NEUTRAL)}
+                {badge("Evidence-Driven Scoring", BADGE_MEASURED)}
+                {badge("Deterministic Assessment", BADGE_CALCULATED)}
+                {badge("No Questionnaire-Based Scoring", BADGE_NEUTRAL)}
+                {badge("Payment Systems Validation Profile", BADGE_VALIDATED)}
+            </div>
+        </div>
+        """
+    )
+
+
+def render_framework_footer():
+    """Renders the closing footer panel (Developed by / Mentored
+    by / Internship Project). Called last so it can sit after
+    executive metrics on the Overview page."""
+
+    render_html(
+        f"""
+        <div class="panel" style="text-align: center;">
+            <div class="panel-copy">
+                Developed by: <strong>{escape(AUTHOR_NAME)}</strong>
+                &nbsp;&middot;&nbsp;
+                Mentored by: <strong>{escape(MENTOR_NAME)}</strong>
+                <br>
+                {escape(ORG_NAME)} Internship Project
+            </div>
+        </div>
+        """
+    )
+
+
+def render_framework_overview():
+    """Renders the full landing-page bundle (intro + footer) in
+    sequence. Used on the empty state, where there are no
+    executive metrics to sandwich between them."""
+
+    render_framework_overview_intro()
+    render_framework_footer()
+
+
 # -------------------------------------------------------------------
 # Empty state
 # -------------------------------------------------------------------
@@ -1189,8 +1711,8 @@ def section_hero(eyebrow, title, description):
 if not report:
 
     section_hero(
-        "Evidence-driven PQC readiness",
-        "Crypto Agility Command Center",
+        "Evidence-driven crypto agility readiness",
+        f"{FRAMEWORK_NAME} Command Center",
         (
             "Transform CycloneDX CBOMKit evidence and "
             "CryptoLyzer runtime observations into "
@@ -1200,47 +1722,7 @@ if not report:
         ),
     )
 
-    render_html(
-        """
-        <div class="evidence-chain">
-            <div class="chain-node">
-                <div class="chain-kicker">Measured</div>
-                <div class="chain-value">CBOMKit</div>
-                <div class="chain-note">
-                    Algorithms, primitives, OIDs,
-                    locations and material relationships
-                </div>
-            </div>
-
-            <div class="chain-node">
-                <div class="chain-kicker">Measured</div>
-                <div class="chain-value">CryptoLyzer</div>
-                <div class="chain-note">
-                    Runtime TLS and hybrid/PQC evidence
-                    from an authorized endpoint
-                </div>
-            </div>
-
-            <div class="chain-node">
-                <div class="chain-kicker">Calculated</div>
-                <div class="chain-value">Maturity Engine</div>
-                <div class="chain-note">
-                    D1-D4, confidence, constraints,
-                    priority and HNDL
-                </div>
-            </div>
-
-            <div class="chain-node">
-                <div class="chain-kicker">Projected</div>
-                <div class="chain-value">Migration Plan</div>
-                <div class="chain-note">
-                    Recommendations, impact chain and
-                    verification requirements
-                </div>
-            </div>
-        </div>
-        """
-    )
+    render_assessment_scope()
 
     validation_summary = load_validation_summary()
 
@@ -1274,6 +1756,8 @@ if not report:
         </div>
         """
     )
+
+    render_framework_overview()
 
     st.stop()
 
@@ -1336,7 +1820,7 @@ if page == PAGE_COMMAND_CENTER:
 
     section_hero(
         "Executive workspace",
-        "Crypto Agility Command Center",
+        f"{FRAMEWORK_NAME} Command Center",
         (
             "A consolidated view of measured crypto "
             "evidence, calculated migration readiness, "
@@ -1344,6 +1828,12 @@ if page == PAGE_COMMAND_CENTER:
             "engine behavior."
         ),
     )
+
+    render_assessment_scope()
+
+    render_framework_overview_intro()
+
+    render_html('<div class="section-label">Executive Metrics</div>')
 
     render_html(
         f"""
@@ -1361,15 +1851,15 @@ if page == PAGE_COMMAND_CENTER:
         <div class="metric-grid">
             {metric_card(
                 total_assets,
-                "Algorithm Assets",
+                "Assets Assessed",
                 "Algorithm components assessed from the CBOM",
                 "cyan",
             )}
 
             {metric_card(
                 mapped_assets,
-                "Mapped Assets",
-                "Assets resolved to a payment component",
+                "Components Mapped",
+                "Assets resolved to a financial system component",
                 "green",
             )}
 
@@ -1377,7 +1867,7 @@ if page == PAGE_COMMAND_CENTER:
                 f"{average_maturity:.1f}"
                 if average_maturity is not None
                 else "Not Assessed",
-                "Current Maturity",
+                "Average Maturity",
                 "Average assessed component maturity",
                 "amber",
             )}
@@ -1393,14 +1883,14 @@ if page == PAGE_COMMAND_CENTER:
 
             {metric_card(
                 display_score(highest_priority),
-                "Highest Priority",
+                "Highest Priority Asset",
                 "Highest migration-backlog score",
                 "coral",
             )}
 
             {metric_card(
                 urgent_assets,
-                "HNDL Urgent",
+                "HNDL Alerts",
                 "Assets requiring immediate planning",
                 "coral",
             )}
@@ -1427,7 +1917,7 @@ if page == PAGE_COMMAND_CENTER:
             <div class="chain-node">
                 <div class="chain-kicker">Mapped</div>
                 <div class="chain-value">
-                    Payment Context
+                    Financial System Context
                 </div>
                 <div class="chain-note">
                     {escape(mapped_assets)} of
@@ -1589,36 +2079,37 @@ if page == PAGE_COMMAND_CENTER:
             "currently Not Assessed."
         )
 
+    render_framework_footer()
+
+    render_step_navigation()
+
 
 # -------------------------------------------------------------------
-# Evidence Vault (includes former Evidence Monitor)
+# Collect (Evidence Vault, minus component-relationship mapping)
 # -------------------------------------------------------------------
 
 elif page == PAGE_EVIDENCE_VAULT:
 
     section_hero(
-        "Measured evidence",
-        "Evidence Vault",
+        "Step 1 · Measured evidence",
+        "Collect Evidence",
         (
             "Inspect the original CycloneDX CBOM, "
-            "cryptographic inventory, material "
-            "relationships, payment-component mapping, "
-            "CryptoLyzer runtime observations, and "
-            "evidence coverage."
+            "cryptographic inventory, CryptoLyzer "
+            "runtime observations, and evidence "
+            "coverage."
         ),
     )
 
     (
         metadata_tab,
         inventory_tab,
-        relationship_tab,
         runtime_tab,
         coverage_tab,
         raw_tab,
     ) = st.tabs([
         "CBOM Overview",
         "Crypto Inventory",
-        "Relationships",
         "Runtime Evidence",
         "Coverage & Re-scan",
         "Raw JSON",
@@ -1784,98 +2275,6 @@ elif page == PAGE_EVIDENCE_VAULT:
                 </div>
             </div>
             """
-        )
-
-    with relationship_tab:
-
-        selected_relationship_asset = st.selectbox(
-            "Select relationship",
-            get_asset_names(report),
-            key="relationship_asset",
-        )
-
-        relationship_item = get_selected_asset(
-            report, selected_relationship_asset
-        )
-
-        protocol = relationship_item["protocol_evidence"]
-        target = protocol.get("target") or {}
-
-        runtime_target = (
-            f"{escape(target.get('address'))}:"
-            f"{escape(target.get('port'))}"
-            if target
-            else "Not Assessed"
-        )
-
-        first_location = (
-            relationship_item["locations"][0]
-            if relationship_item["locations"]
-            else None
-        )
-
-        render_html(
-            f"""
-            <div class="evidence-chain">
-                <div class="chain-node">
-                    <div class="chain-kicker">Source</div>
-                    <div class="chain-value">
-                        {escape(display_score(first_location))}
-                    </div>
-                    <div class="chain-note">
-                        CBOM occurrence evidence
-                    </div>
-                </div>
-
-                <div class="chain-node">
-                    <div class="chain-kicker">Algorithm</div>
-                    <div class="chain-value">
-                        {escape(relationship_item["asset"])}
-                    </div>
-                    <div class="chain-note">
-                        Primitive:
-                        {escape(
-                            display_score(
-                                relationship_item["primitive"]
-                            )
-                        )}
-                    </div>
-                </div>
-
-                <div class="chain-node">
-                    <div class="chain-kicker">Component</div>
-                    <div class="chain-value">
-                        {escape(relationship_item["component"])}
-                    </div>
-                    <div class="chain-note">
-                        Payment weight:
-                        {escape(relationship_item["payment_weight"])}
-                    </div>
-                </div>
-
-                <div class="chain-node">
-                    <div class="chain-kicker">Runtime</div>
-                    <div class="chain-value">
-                        {runtime_target}
-                    </div>
-                    <div class="chain-note">
-                        {escape(
-                            display_score(
-                                protocol.get("tls_version")
-                            )
-                        )}
-                    </div>
-                </div>
-            </div>
-            """
-        )
-
-        st.info(
-            "Material relationships are read from "
-            "CycloneDX dependencies. Unsupported "
-            "material-and-primitive combinations are "
-            "marked Not Assessed rather than assigned "
-            "an optimistic score."
         )
 
     with runtime_tab:
@@ -2140,6 +2539,118 @@ elif page == PAGE_EVIDENCE_VAULT:
         with raw_assessment_tab:
             st.json(report, expanded=False)
 
+    render_step_navigation()
+
+
+# -------------------------------------------------------------------
+# Map (Component Resolution) — business-context mapping
+# -------------------------------------------------------------------
+
+elif page == PAGE_MAP:
+
+    section_hero(
+        "Step 2 · Business context resolution",
+        "Map Components",
+        (
+            "Review how each algorithm asset resolves to "
+            "a financial system component, and inspect "
+            "the material relationship and runtime "
+            "evidence behind that mapping."
+        ),
+    )
+
+    selected_relationship_asset = st.selectbox(
+        "Select relationship",
+        get_asset_names(report),
+        key="relationship_asset",
+    )
+
+    relationship_item = get_selected_asset(
+        report, selected_relationship_asset
+    )
+
+    protocol = relationship_item["protocol_evidence"]
+    target = protocol.get("target") or {}
+
+    runtime_target = (
+        f"{escape(target.get('address'))}:"
+        f"{escape(target.get('port'))}"
+        if target
+        else "Not Assessed"
+    )
+
+    first_location = (
+        relationship_item["locations"][0]
+        if relationship_item["locations"]
+        else None
+    )
+
+    render_html(
+        f"""
+        <div class="evidence-chain">
+            <div class="chain-node">
+                <div class="chain-kicker">Source</div>
+                <div class="chain-value">
+                    {escape(display_score(first_location))}
+                </div>
+                <div class="chain-note">
+                    CBOM occurrence evidence
+                </div>
+            </div>
+
+            <div class="chain-node">
+                <div class="chain-kicker">Algorithm</div>
+                <div class="chain-value">
+                    {escape(relationship_item["asset"])}
+                </div>
+                <div class="chain-note">
+                    Primitive:
+                    {escape(
+                        display_score(
+                            relationship_item["primitive"]
+                        )
+                    )}
+                </div>
+            </div>
+
+            <div class="chain-node">
+                <div class="chain-kicker">Component</div>
+                <div class="chain-value">
+                    {escape(relationship_item["component"])}
+                </div>
+                <div class="chain-note">
+                    {escape(BUSINESS_CRITICALITY_LABEL)}:
+                    {escape(relationship_item["payment_weight"])}
+                </div>
+            </div>
+
+            <div class="chain-node">
+                <div class="chain-kicker">Runtime</div>
+                <div class="chain-value">
+                    {runtime_target}
+                </div>
+                <div class="chain-note">
+                    {escape(
+                        display_score(
+                            protocol.get("tls_version")
+                        )
+                    )}
+                </div>
+            </div>
+        </div>
+        """
+    )
+
+    st.info(
+        "Material relationships are read from "
+        "CycloneDX dependencies. Unsupported "
+        "material-and-primitive combinations are "
+        "marked Not Assessed rather than assigned "
+        "an optimistic score."
+    )
+
+    render_step_navigation()
+
 
 # -------------------------------------------------------------------
 # Maturity Explorer
@@ -2148,8 +2659,8 @@ elif page == PAGE_EVIDENCE_VAULT:
 elif page == PAGE_MATURITY_EXPLORER:
 
     section_hero(
-        "Core assessment model",
-        "Maturity Explorer",
+        "Step 3 · Core assessment model",
+        "Assess Maturity",
         (
             "Understand how measured evidence becomes "
             "D1-D4 maturity, confidence, binding "
@@ -2284,22 +2795,25 @@ elif page == PAGE_MATURITY_EXPLORER:
                 "zero or a default level."
             )
 
+    render_step_navigation()
+
 
 # -------------------------------------------------------------------
-# Priority Queue
+# Prioritise (Priority Queue)
 # -------------------------------------------------------------------
 
 elif page == PAGE_PRIORITY_QUEUE:
 
     section_hero(
-        "Migration decision support",
-        "Priority Queue",
+        "Step 4 · Migration decision support",
+        "Prioritise Migration",
         (
-            "Rank assets using algorithm risk, payment "
-            "context, and the readiness gap without "
+            "Rank assets using algorithm risk, business "
+            "criticality, and the readiness gap without "
             "changing the evidence-based maturity score. "
-            "Payment weight affects priority ranking only "
-            "— it does not alter technical maturity."
+            "Business criticality weight affects priority "
+            "ranking only — it does not alter technical "
+            "maturity."
         ),
     )
 
@@ -2311,7 +2825,7 @@ elif page == PAGE_PRIORITY_QUEUE:
             "Asset": item["asset"],
             "Component": item["component"],
             "Algorithm Risk": item["algorithm_risk"],
-            "Payment Weight": item["payment_weight"],
+            BUSINESS_CRITICALITY_LABEL: item["payment_weight"],
             "Maturity": item["maturity"],
             "Readiness Gap": 5 - item["maturity"],
             "Priority": item["priority"],
@@ -2361,7 +2875,8 @@ elif page == PAGE_PRIORITY_QUEUE:
                 </div>
                 <div class="panel-title">Priority Formula</div>
                 <div class="panel-copy">
-                    Algorithm Risk &times; Payment Weight
+                    Algorithm Risk &times;
+                    {escape(BUSINESS_CRITICALITY_LABEL)}
                     &times; (5 &minus; Maturity)
                     <br><br>
                     {escape(priority_item["algorithm_risk"])}
@@ -2375,16 +2890,18 @@ elif page == PAGE_PRIORITY_QUEUE:
             """
         )
 
+    render_step_navigation()
+
 
 # -------------------------------------------------------------------
-# Migration Planner (includes former Scenario Lab)
+# Plan (Migration Planner, includes former Scenario Lab)
 # -------------------------------------------------------------------
 
 elif page == PAGE_MIGRATION_PLANNER:
 
     section_hero(
-        "Projected remediation",
-        "Migration Planner",
+        "Step 5 · Projected remediation",
+        "Plan Remediation",
         (
             "Convert binding constraints into a staged "
             "migration flight plan and compare remediation "
@@ -2645,232 +3162,227 @@ elif page == PAGE_MIGRATION_PLANNER:
                 "are used in these scenarios."
             )
 
+    render_step_navigation()
+
 
 # -------------------------------------------------------------------
-# Validation Lab
+# Validate (Validation Lab + Reports & Exports)
 # -------------------------------------------------------------------
 
 elif page == PAGE_VALIDATION_LAB:
 
     section_hero(
-        "Implementation assurance",
-        "Validation Lab",
+        "Step 6 · Implementation assurance",
+        "Validate Readiness",
         (
-            "Demonstrate that the assessment engine behaves "
-            "consistently across unit, integration, mutation, "
-            "and sensitivity validation."
+            "Confirm confidence, review implementation "
+            "assurance testing, and refresh evidence quality "
+            "through reassessment."
         ),
     )
 
-    validation_summary = load_validation_summary()
+    test_results_tab, reports_tab = st.tabs(
+        ["Test Results", "Reports & Exports"]
+    )
 
-    if validation_summary is None:
-        st.warning(
-            "Validation summary unavailable. Generate it "
-            "with: `python generate_validation_summary.py` "
-            "(this dashboard never runs pytest automatically)."
-        )
-    else:
+    with test_results_tab:
+
+        validation_summary = load_validation_summary()
+
+        if validation_summary is None:
+            st.warning(
+                "Validation summary unavailable. Generate it "
+                "with: `python generate_validation_summary.py` "
+                "(this dashboard never runs pytest automatically)."
+            )
+        else:
+            render_html(
+                f"""
+                <div class="metric-grid">
+                    {metric_card(
+                        validation_summary["passed"],
+                        "Tests Passed",
+                        f"Of {validation_summary['total_tests']} "
+                        "total automated tests",
+                        "green",
+                    )}
+
+                    {metric_card(
+                        validation_summary["failed"],
+                        "Failures",
+                        "Failing validation cases",
+                        "green"
+                        if validation_summary["failed"] == 0
+                        else "coral",
+                    )}
+
+                    {metric_card(
+                        f"{validation_summary['duration_seconds']}s",
+                        "Duration",
+                        "Time to run the full suite",
+                        "cyan",
+                    )}
+
+                    {metric_card(
+                        len(validation_summary["category_counts"]),
+                        "Test Modules",
+                        "Distinct test files executed",
+                        "violet",
+                    )}
+                </div>
+                """
+            )
+
+            st.caption(
+                f"Generated: {validation_summary['generated_at']}"
+            )
+
+            category_rows = [
+                {
+                    "Test Module": module_name,
+                    "Passed": counts.get("passed", 0),
+                    "Failed": (
+                        counts.get("failed", 0)
+                        + counts.get("error", 0)
+                    ),
+                    "Skipped": counts.get("skipped", 0),
+                }
+                for module_name, counts
+                in validation_summary["category_counts"].items()
+            ]
+
+            st.dataframe(
+                pd.DataFrame(category_rows),
+                use_container_width=True,
+                hide_index=True,
+            )
+
         render_html(
             f"""
-            <div class="metric-grid">
-                {metric_card(
-                    validation_summary["passed"],
-                    "Tests Passed",
-                    f"Of {validation_summary['total_tests']} "
-                    "total automated tests",
-                    "green",
-                )}
-
-                {metric_card(
-                    validation_summary["failed"],
-                    "Failures",
-                    "Failing validation cases",
-                    "green"
-                    if validation_summary["failed"] == 0
-                    else "coral",
-                )}
-
-                {metric_card(
-                    f"{validation_summary['duration_seconds']}s",
-                    "Duration",
-                    "Time to run the full suite",
-                    "cyan",
-                )}
-
-                {metric_card(
-                    len(validation_summary["category_counts"]),
-                    "Test Modules",
-                    "Distinct test files executed",
-                    "violet",
-                )}
+            <div class="badge-row">
+                {badge("Validated · Test Suite", BADGE_VALIDATED)}
             </div>
             """
         )
 
-        st.caption(
-            f"Generated: {validation_summary['generated_at']}"
+        render_html(
+            """
+            <div class="info-banner">
+                Validation confirms implementation behavior. It
+                does not prove that an assessed financial system
+                is PQC-ready.
+            </div>
+            """
         )
 
-        category_rows = [
-            {
-                "Test Module": module_name,
-                "Passed": counts.get("passed", 0),
-                "Failed": (
-                    counts.get("failed", 0)
-                    + counts.get("error", 0)
-                ),
-                "Skipped": counts.get("skipped", 0),
-            }
-            for module_name, counts
-            in validation_summary["category_counts"].items()
-        ]
+    with reports_tab:
 
-        st.dataframe(
-            pd.DataFrame(category_rows),
-            use_container_width=True,
-            hide_index=True,
-        )
+        json_bytes = json.dumps(
+            report, indent=2, ensure_ascii=False
+        ).encode("utf-8")
 
-    render_html(
-        f"""
-        <div class="badge-row">
-            {badge("Validated · Test Suite", BADGE_VALIDATED)}
-        </div>
-        """
-    )
+        csv_bytes = build_csv_bytes(report)
 
-    render_html(
-        """
-        <div class="info-banner">
-            Validation confirms implementation behavior. It
-            does not prove that an assessed payment system is
-            PQC-ready.
-        </div>
-        """
-    )
+        cbom_bytes = json.dumps(
+            cbom_data, indent=2, ensure_ascii=False
+        ).encode("utf-8")
 
+        cryptolyzer_bytes = json.dumps(
+            cryptolyzer_data, indent=2, ensure_ascii=False
+        ).encode("utf-8")
 
-# -------------------------------------------------------------------
-# Reports
-# -------------------------------------------------------------------
+        migration_plan_bytes = json.dumps(
+            build_migration_plan(report),
+            indent=2,
+            ensure_ascii=False,
+        ).encode("utf-8")
 
-elif page == PAGE_REPORTS:
+        validation_summary = load_validation_summary()
 
-    section_hero(
-        "Audit and export",
-        "Reports",
-        (
-            "Download the assessed portfolio, raw measured "
-            "evidence, projected migration guidance, and "
-            "machine-readable reports."
-        ),
-    )
+        download_1, download_2 = st.columns(2)
 
-    json_bytes = json.dumps(
-        report, indent=2, ensure_ascii=False
-    ).encode("utf-8")
-
-    csv_bytes = build_csv_bytes(report)
-
-    cbom_bytes = json.dumps(
-        cbom_data, indent=2, ensure_ascii=False
-    ).encode("utf-8")
-
-    cryptolyzer_bytes = json.dumps(
-        cryptolyzer_data, indent=2, ensure_ascii=False
-    ).encode("utf-8")
-
-    migration_plan_bytes = json.dumps(
-        build_migration_plan(report),
-        indent=2,
-        ensure_ascii=False,
-    ).encode("utf-8")
-
-    validation_summary = load_validation_summary()
-
-    download_1, download_2 = st.columns(2)
-
-    with download_1:
-        st.download_button(
-            "Download Assessment JSON",
-            json_bytes,
-            file_name="assessment_report.json",
-            mime="application/json",
-            use_container_width=True,
-        )
-
-        st.download_button(
-            "Download Original CBOM",
-            cbom_bytes,
-            file_name="cyclonedx_cbom.json",
-            mime="application/json",
-            use_container_width=True,
-        )
-
-        st.download_button(
-            "Download Migration Plan",
-            migration_plan_bytes,
-            file_name="migration_plan.json",
-            mime="application/json",
-            use_container_width=True,
-        )
-
-    with download_2:
-        st.download_button(
-            "Download Portfolio CSV",
-            csv_bytes,
-            file_name="assessment_report.csv",
-            mime="text/csv",
-            use_container_width=True,
-        )
-
-        st.download_button(
-            "Download CryptoLyzer Evidence",
-            cryptolyzer_bytes,
-            file_name="cryptolyzer_evidence.json",
-            mime="application/json",
-            use_container_width=True,
-        )
-
-        if validation_summary is not None:
+        with download_1:
             st.download_button(
-                "Download Validation Summary",
-                json.dumps(
-                    validation_summary,
-                    indent=2,
-                    ensure_ascii=False,
-                ).encode("utf-8"),
-                file_name="validation_summary.json",
+                "Download Assessment JSON",
+                json_bytes,
+                file_name="assessment_report.json",
                 mime="application/json",
                 use_container_width=True,
             )
-        else:
-            st.caption(
-                "Validation summary unavailable — run "
-                "`python generate_validation_summary.py` "
-                "to generate it."
+
+            st.download_button(
+                "Download Original CBOM",
+                cbom_bytes,
+                file_name="cyclonedx_cbom.json",
+                mime="application/json",
+                use_container_width=True,
             )
 
-    render_html(
-        f"""
-        <div class="panel">
-            <div class="panel-title">
-                Report evidence classification
+            st.download_button(
+                "Download Migration Plan",
+                migration_plan_bytes,
+                file_name="migration_plan.json",
+                mime="application/json",
+                use_container_width=True,
+            )
+
+        with download_2:
+            st.download_button(
+                "Download Portfolio CSV",
+                csv_bytes,
+                file_name="assessment_report.csv",
+                mime="text/csv",
+                use_container_width=True,
+            )
+
+            st.download_button(
+                "Download CryptoLyzer Evidence",
+                cryptolyzer_bytes,
+                file_name="cryptolyzer_evidence.json",
+                mime="application/json",
+                use_container_width=True,
+            )
+
+            if validation_summary is not None:
+                st.download_button(
+                    "Download Validation Summary",
+                    json.dumps(
+                        validation_summary,
+                        indent=2,
+                        ensure_ascii=False,
+                    ).encode("utf-8"),
+                    file_name="validation_summary.json",
+                    mime="application/json",
+                    use_container_width=True,
+                )
+            else:
+                st.caption(
+                    "Validation summary unavailable — run "
+                    "`python generate_validation_summary.py` "
+                    "to generate it."
+                )
+
+        render_html(
+            f"""
+            <div class="panel">
+                <div class="panel-title">
+                    Report evidence classification
+                </div>
+                <div class="badge-row">
+                    {badge(LABEL_MEASURED_CBOMKIT, BADGE_MEASURED)}
+                    {badge(LABEL_MEASURED_CRYPTOLYZER, BADGE_MEASURED)}
+                    {badge(
+                        "Calculated · Assessment Engine",
+                        BADGE_CALCULATED,
+                    )}
+                    {badge(
+                        "Projected · Migration Guidance",
+                        BADGE_PROJECTED,
+                    )}
+                    {badge("Validated · Test Suite", BADGE_VALIDATED)}
+                </div>
             </div>
-            <div class="badge-row">
-                {badge(LABEL_MEASURED_CBOMKIT, BADGE_MEASURED)}
-                {badge(LABEL_MEASURED_CRYPTOLYZER, BADGE_MEASURED)}
-                {badge(
-                    "Calculated · Assessment Engine",
-                    BADGE_CALCULATED,
-                )}
-                {badge(
-                    "Projected · Migration Guidance",
-                    BADGE_PROJECTED,
-                )}
-                {badge("Validated · Test Suite", BADGE_VALIDATED)}
-            </div>
-        </div>
-        """
-    )
+            """
+        )
+
+    render_step_navigation()

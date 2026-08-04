@@ -6,8 +6,10 @@ maturity_engine.py, report_generator.py, ...) so presentation
 concerns never influence the validated scoring methodology.
 """
 
+import base64
 import html
 import json
+from functools import lru_cache
 from textwrap import dedent
 from typing import Any, Iterable, Optional
 
@@ -16,25 +18,80 @@ from typing import Any, Iterable, Optional
 # Page / navigation constants
 # -------------------------------------------------------------------
 
-PAGE_COMMAND_CENTER = "Command Center"
-PAGE_EVIDENCE_VAULT = "Evidence Vault"
-PAGE_MATURITY_EXPLORER = "Maturity Explorer"
-PAGE_PRIORITY_QUEUE = "Priority Queue"
-PAGE_MIGRATION_PLANNER = "Migration Planner"
-PAGE_VALIDATION_LAB = "Validation Lab"
-PAGE_REPORTS = "Reports"
+PAGE_COMMAND_CENTER = "Overview"
+PAGE_EVIDENCE_VAULT = "Collect"
+PAGE_MAP = "Map"
+PAGE_MATURITY_EXPLORER = "Assess"
+PAGE_PRIORITY_QUEUE = "Prioritise"
+PAGE_MIGRATION_PLANNER = "Plan"
+PAGE_VALIDATION_LAB = "Validate"
 
 PAGES = (
     PAGE_COMMAND_CENTER,
     PAGE_EVIDENCE_VAULT,
+    PAGE_MAP,
     PAGE_MATURITY_EXPLORER,
     PAGE_PRIORITY_QUEUE,
     PAGE_MIGRATION_PLANNER,
     PAGE_VALIDATION_LAB,
-    PAGE_REPORTS,
+)
+
+# Steps that carry a visible sequence number in the workflow stepper.
+# Overview is the unnumbered landing/home state.
+WORKFLOW_STEPS = (
+    {"key": PAGE_COMMAND_CENTER, "number": None, "label": "Overview"},
+    {"key": PAGE_EVIDENCE_VAULT, "number": 1, "label": "Collect"},
+    {"key": PAGE_MAP, "number": 2, "label": "Map"},
+    {"key": PAGE_MATURITY_EXPLORER, "number": 3, "label": "Assess"},
+    {"key": PAGE_PRIORITY_QUEUE, "number": 4, "label": "Prioritise"},
+    {"key": PAGE_MIGRATION_PLANNER, "number": 5, "label": "Plan"},
+    {"key": PAGE_VALIDATION_LAB, "number": 6, "label": "Validate"},
 )
 
 NAV_STATE_KEY = "workspace_page"
+
+
+# -------------------------------------------------------------------
+# Framework branding constants
+# -------------------------------------------------------------------
+
+FRAMEWORK_NAME = "FCAF"
+FRAMEWORK_FULL_NAME = "Financial Crypto Agility Assessment Framework"
+FRAMEWORK_MISSION = (
+    "Evidence-Driven Crypto Agility Assessment for "
+    "Quantum-Safe Financial System Planning"
+)
+FRAMEWORK_POSITIONING = (
+    "Domain-Independent Assessment Methodology",
+    "Implemented & Validated Case Study: Payment Systems",
+)
+FRAMEWORK_TAGLINE = (
+    "Domain-Independent Crypto Agility Assessment "
+    "· Validated Payment Systems Case Study"
+)
+AUTHOR_NAME = "Saleh Ahmed Alrasheed"
+MENTOR_NAME = "Vijayaraghavan Varadharajan"
+ORG_NAME = "Infosys"
+
+BUSINESS_CRITICALITY_LABEL = "Business Criticality Weight"
+
+LOGO_PATH = "assets/infosys_logo.png"
+
+
+@lru_cache(maxsize=1)
+def _load_logo_data_uri(path: str = LOGO_PATH) -> Optional[str]:
+    """Reads and base64-encodes the local logo file for inline
+    embedding in rendered HTML. Returns None (never raises) for
+    any missing or unreadable file, so the header can fall back
+    to a text badge instead of breaking the dashboard."""
+
+    try:
+        with open(path, "rb") as file:
+            encoded = base64.b64encode(file.read()).decode("ascii")
+    except OSError:
+        return None
+
+    return f"data:image/png;base64,{encoded}"
 
 
 # -------------------------------------------------------------------
@@ -303,6 +360,123 @@ def display_score(score: Any) -> Any:
         return "Not Assessed"
 
     return score
+
+
+def render_header(status_label: str) -> None:
+    """Renders the executive branding header (logo, framework name,
+    author/mentor/org, assessment status).
+
+    Uses the real Infosys logo (assets/infosys_logo.png) when it can
+    be read; falls back to a text badge otherwise so the dashboard
+    never breaks on a missing asset."""
+
+    logo_data_uri = _load_logo_data_uri()
+
+    logo_html = (
+        f'<img class="brand-logo-img" src="{logo_data_uri}" '
+        f'alt="{escape(ORG_NAME)} logo">'
+        if logo_data_uri
+        else f'<div class="brand-logo-badge">{escape(ORG_NAME.upper())}</div>'
+    )
+
+    positioning_html = "<br>".join(
+        escape(line) for line in FRAMEWORK_POSITIONING
+    )
+
+    render_html(
+        f"""
+        <div class="brand-header">
+            {logo_html}
+            <div class="brand-main">
+                <div class="brand-title">
+                    {escape(FRAMEWORK_FULL_NAME)}
+                    ({escape(FRAMEWORK_NAME)})
+                </div>
+                <div class="brand-subtitle">
+                    {escape(FRAMEWORK_MISSION)}
+                </div>
+                <div class="brand-subline">
+                    {positioning_html}
+                </div>
+            </div>
+            <div class="brand-meta">
+                <div class="brand-meta-item">
+                    <span class="brand-meta-label">Author</span>
+                    <span class="brand-meta-value">
+                        {escape(AUTHOR_NAME)}
+                    </span>
+                </div>
+                <div class="brand-meta-item">
+                    <span class="brand-meta-label">Mentor</span>
+                    <span class="brand-meta-value">
+                        {escape(MENTOR_NAME)}
+                    </span>
+                </div>
+                <div class="brand-meta-item">
+                    <span class="brand-meta-label">Organization</span>
+                    <span class="brand-meta-value">
+                        {escape(ORG_NAME)}
+                    </span>
+                </div>
+                <div class="brand-meta-item">
+                    <span class="brand-meta-label">Status</span>
+                    <span class="brand-meta-value">
+                        {escape(status_label)}
+                    </span>
+                </div>
+            </div>
+        </div>
+        """
+    )
+
+
+def render_stepper(steps: Iterable[dict], current_key: str) -> None:
+    """Renders the read-only visual step-track (numbered pills with
+    connecting line). Actual navigation is driven separately by real
+    st.button controls, since raw HTML cannot trigger Streamlit
+    callbacks."""
+
+    current_index = next(
+        (
+            index
+            for index, step in enumerate(steps)
+            if step["key"] == current_key
+        ),
+        0,
+    )
+
+    pill_items = []
+
+    for index, step in enumerate(steps):
+        if index < current_index:
+            state = "completed"
+        elif index == current_index:
+            state = "active"
+        else:
+            state = "upcoming"
+
+        number_html = (
+            f'<span class="step-pill-number">{step["number"]}</span>'
+            if step["number"] is not None
+            else '<span class="step-pill-number">&#9670;</span>'
+        )
+
+        pill_items.append(
+            f'<div class="step-pill {state}">'
+            f"{number_html}"
+            f'<span class="step-pill-label">'
+            f'{escape(step["label"])}'
+            f"</span>"
+            f"</div>"
+        )
+
+    render_html(
+        f"""
+        <div class="stepper-track">
+            {''.join(pill_items)}
+        </div>
+        """
+    )
 
 
 # -------------------------------------------------------------------

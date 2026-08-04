@@ -1,8 +1,9 @@
 
 from datetime import date
-# ── Payment context weights ────────────────────────────────────────────────────
+# ── Business criticality weights (payment systems validation profile) ─────────
 # Informed by PCI-DSS v4.0.1 Requirement 4 scope classification.
 # Higher weight = greater HNDL exposure risk.
+# Domain-specific: influences prioritisation only, not D1-D4/maturity/confidence.
 
 PAYMENT_WEIGHTS = {
     "Payment Gateway":    1.0,
@@ -215,7 +216,7 @@ def algorithm_risk(algorithm):
 
 
 # ── Priority score ─────────────────────────────────────────────────────────────
-# Priority Score = Algorithm Risk x Payment Weight x (5 - Maturity Level)
+# Priority Score = Algorithm Risk x Business Criticality Weight x (5 - Maturity Level)
 # Higher score = address first.
 
 def calculate_priority(risk, weight, maturity):
