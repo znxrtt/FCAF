@@ -23,6 +23,7 @@ __pycache__/
 # Generated evidence and reports
 assessment_report.json
 assessment_report.csv
+assessment_report(-).json
 
 # IDE and operating system
 .vscode/
@@ -35,3 +36,6 @@ Thumbs.db
 *.log
 # Local AI tool configuration
 .claude/
+
+assets/
+└── infosys_logo.png
