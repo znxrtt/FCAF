@@ -1,0 +1,36 @@
+FCAF Automated Validation Status
+
+Generated At: 2026-08-11T08:55:25+00:00
+
+Validation Results:
+- Tests Collected: 184
+- Tests Passed: 184
+- Tests Failed: 0
+- Tests Skipped: 0
+- Duration: 2.38 seconds
+
+Test Categories:
+- CryptoLyzer Parser: 10
+- D2 Multi-Location Integration: 3
+- Impact Chain: 11
+- Maturity: 10
+- Mosca/HNDL: 12
+- Mutation Behavior: 9
+- General Parsers: 29
+- Recommendations: 9
+- Report Generation: 21
+- Assessment Rules: 32
+- Sensitivity Analysis: 14
+- UI Helpers: 24
+
+Authoritative Source:
+- Current pytest execution
+- Current validation_summary.json
+
+Approved Technical Paper Wording:
+The final automated validation execution collected 184 tests, all of which
+passed with zero failures and zero skipped tests. The test suite covered
+evidence parsing, assessment rules, maturity calculations, Mosca/HNDL
+planning, recommendations, impact-chain logic, report generation,
+sensitivity analysis, mutation behavior, integration behavior, and
+user-interface helpers.
