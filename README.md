@@ -13,17 +13,18 @@
 The framework processes cryptographic posture across an end-to-end multi-tier pipeline:
 
 ![FCAF Evidence-to-Decision Pipeline](./assets/system_architecture.png)
-
 ### 2. Execution Pipeline Workflow
-mermaid
+
+```mermaid
 flowchart TD
-A[Cryptographic Evidence / CBOM] --> B[Parsers & Cryptolyzer Engine]
-B --> C[Rules Engine\nNIST PQC & PCI-DSS]
-C --> D[Maturity Engine\nAgility Scoring]
-D --> E[Impact Chain Analyzer\nBlast Radius]
-E --> F[Recommendation Engine]
-F --> G[Interactive Dashboard\nStreamlit UI]
-F --> H[Structured Reports\nJSON / CSV Export]
+    A[Cryptographic Evidence / CBOM] --> B[Parsers & Cryptolyzer Engine]
+    B --> C[Rules Engine\nNIST PQC & PCI-DSS]
+    C --> D[Maturity Engine\nAgility Scoring]
+    D --> E[Impact Chain Analyzer\nBlast Radius]
+    E --> F[Recommendation Engine]
+    F --> G[Interactive Dashboard\nStreamlit UI]
+    F --> H[Structured Reports\nJSON / CSV Export]
+```
 
 
 ---
