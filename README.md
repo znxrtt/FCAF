@@ -14,22 +14,9 @@
 
 ---
 
-## 📂 Project Structure
+## 🛠️ Installation & Setup
 
-```text
-crypto-agility-review/
-├── app.py                     # Streamlit web application & dashboard
-├── main.py                    # Core CLI entry point
-├── maturity_engine.py         # Scoring & crypto-agility calculation logic
-├── rules.py                   # Cryptographic compliance & risk rule definitions
-├── parsers.py                 # Multi-source parsers for CBOM and evidence
-├── cryptolyzer_parser.py      # Parser for TLS/SSL & Cryptolyzer evidence
-├── impact_chain.py            # Blast radius and dependency analyzer
-├── recommendation_engine.py   # Remediation & migration path generator
-├── report_generator.py        # Assessment summary and compliance reporting
-├── payment_simulation/        # Mock environment for PKI, CA, and Payment Gateway
-│   ├── certificate_authority/ # CA lifecycle & mTLS management
-│   ├── open_banking/          # OAuth & token handling simulation
-│   ├── payment_gateway/       # Transaction signing & verification
-│   └── pki/                   # Key rotation & management services
-└── tests/                     # Unit & integration test suite
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/znxrtt/FCAF.git](https://github.com/znxrtt/FCAF.git)
+   cd FCAF
