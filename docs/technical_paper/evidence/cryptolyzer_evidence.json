@@ -1,0 +1,16 @@
+{
+  "component": "PKI Infrastructure",
+  "source": "cryptolyzer",
+  "target": {
+    "scheme": "tls",
+    "address": "localhost",
+    "ip": "127.0.0.1",
+    "port": 8443
+  },
+  "detected_versions": [
+    "tls1_2"
+  ],
+  "tls_version": "TLS1.2",
+  "hybrid": false,
+  "assessed": true
+}

@@ -1,0 +1,40 @@
+FCAF Technical Paper Evidence Manifest
+
+Authoritative Case-Study CBOM:
+evidence_samples/cbom_multi_location.json
+
+Business-Context Mapping:
+component_mapping.json
+
+Runtime Protocol Evidence:
+cryptolyzer_evidence.json
+
+Authoritative Assessment Results:
+assessment_report.csv
+
+Authoritative Validation Summary:
+validation_summary.json
+
+Current Automated Validation:
+- Tests collected: 184
+- Passed: 184
+- Failed: 0
+- Skipped: 0
+
+Current Verified Portfolio:
+- Algorithm assets: 5
+- Component types: 3
+- Average current maturity: 2.2 out of 4
+- Average projected maturity: 3.0 out of 4
+- HNDL planning alerts: 5 under current configurable assumptions
+- Highest-priority asset: ECDSA-secp256r1-SHA-256
+- Highest priority score: 12.0
+
+Important:
+- The authoritative CBOM is evidence_samples/cbom_multi_location.json.
+- Root cbom.json is not the authoritative case-study CBOM.
+- Files under test_data are test fixtures.
+- Files under .claude/worktrees are not authoritative.
+- Any report showing RSA D2 = 4 is stale.
+- The current verified RSA result has D1 = 2, D2 = 2, D3 = 2,
+  D4 = Not Assessed, maturity = 2, and priority = 7.2.
