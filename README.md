@@ -12,7 +12,7 @@
 ### FCAF Evidence-to-Decision Pipeline
 The framework processes cryptographic posture across an end-to-end multi-tier pipeline:
 
-![FCAF Evidence-to-Decision Pipeline](assets/system_architecture.png)
+![FCAF Evidence-to-Decision Pipeline](./assets/system_architecture.png)
 
 ### 2. Execution Pipeline Workflow
 mermaid

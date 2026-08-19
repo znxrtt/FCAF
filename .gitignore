@@ -39,3 +39,5 @@ Thumbs.db
 
 assets/
 └── infosys_logo.png
+!assets/
+!assets/*
