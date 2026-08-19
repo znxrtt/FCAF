@@ -60,7 +60,7 @@ flowchart TD
 
 ## 📂 Project Structure
 
-text
+```text
 crypto-agility-FCAF/
 ├── app.py                     # Streamlit interactive dashboard
 ├── main.py                    # CLI entry point
@@ -80,8 +80,7 @@ crypto-agility-FCAF/
 │   ├── WORKFLOW.md            # Detailed workflow mechanics
 │   └── technical_paper/       # Scientific methodology & evidence
 └── tests/                     # Automated unit and integration test suite
-
-
+```
 ---
 
 ## 🚀 Quickstart
